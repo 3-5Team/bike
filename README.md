@@ -552,3 +552,58 @@ Viewer 인 MyPage 서비스를 별도로 구현하여 아래와 같이 View가 �
 # 운영
   
 ## Deploy / Pipeline
+
+- git에서 소스 가져오기
+
+```
+git clone https://github.com/3-5Team/bike.git
+```
+
+- Build 및 Dockerizing을 통한 Azure Container Resistry(ACR)에 Push 하기
+ 
+```bash
+cd ..
+cd stock
+mvn package
+docker build -t skccacr.azurecr.io/stock:latest .
+docker push skccacr.azurecr.io/stock:latest
+
+cd ..
+cd reservation
+mvn package
+docker build -t skccacr.azurecr.io/reservation:latest .
+docker push skccacr.azurecr.io/reservation:latest
+
+cd ..
+cd payment
+mvn package
+docker build -t skccacr.azurecr.io/payment:latest .
+docker push skccacr.azurecr.io/payment:latest
+
+cd ..
+cd delivery
+mvn package
+docker build -t skccacr.azurecr.io/delivery:latest .
+docker push skccacr.azurecr.io/delivery:latest
+
+cd ..
+cd mypage
+mvn package
+docker build -t skccacr.azurecr.io/mypage:latest .
+docker push skccacr.azurecr.io/mypage:latest
+
+cd ..
+cd gateway
+mvn package
+docker build -t skccacr.azurecr.io/gateway:latest .
+docker push skccacr.azurecr.io/gateway:latest
+```
+
+- ACR에 정상 Push 완료
+
+![image](https://user-images.githubusercontent.com/89397401/132283840-9f994ddd-e96f-4457-a234-adc9df1b91ca.png)
+
+- Kafka 설치 및 배포 완료
+
+![image](https://user-images.githubusercontent.com/89397401/132283932-e95d20f2-972d-4c9d-8b4a-d67d05752b9f.png)
+
