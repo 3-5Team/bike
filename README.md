@@ -816,7 +816,7 @@ kubectl describe po reservation
 ## Circuit Breaker
 
 - FeignClient + Hystrix 옵션을 사용하여 구현함.
-- 예약 이후 결제 진행 시 연결을 RESTful Request/Response 로 연동하여 구현이 되어있고, 결제 요청이 과도할 경우 Circuit Breaker 를 통하여 장애격리 처리
+- 예약 이후 결제 진행 시 연결을 RESTful Request/Response 로 연동하여 구현이 되어있고, 예약 요청이 과도할 경우 Circuit Breaker 를 통하여 장애격리 처리
 - Hystrix 설정 : 요청처리 쓰레드에서 처리시간이 610 밀리가 넘어서기 시작하여 어느정도 유지되면 Circuit Breaker 회로가 닫히도록 (Fast Fail처리, 차단) 설정
 
 Reservation 서비스의 application.yml 설정
