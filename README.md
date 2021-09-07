@@ -29,10 +29,10 @@
 * MSAEz 로 모델링한 이벤트스토밍 결과: http://labs.msaez.io/#/storming/RlIcWPwK7EWnLeZIefkRchpnt272/c812c1241e39c7e19f3cd98f88409e6b
 
 ### 이벤트 도출
-작성예정
+![image](https://user-images.githubusercontent.com/89397401/132296158-b02a047c-a8bc-449f-b0c6-63505570cf41.png)
 
 ### 부적격 이벤트 탈락
-작성예정
+![image](https://user-images.githubusercontent.com/89397401/132296400-2d12616e-80bd-4aec-ad6a-5ed3475e55ed.png)
 
 ### 완성된 1차 모형
 ![image](https://user-images.githubusercontent.com/89397401/132272997-acadd044-2756-4557-9b86-239f1d2e66fe.png)
