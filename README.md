@@ -25,7 +25,23 @@
 
 # 분석/설계
 
+## Event Storming 결과
+* MSAEz 로 모델링한 이벤트스토밍 결과: http://labs.msaez.io/#/storming/RlIcWPwK7EWnLeZIefkRchpnt272/c812c1241e39c7e19f3cd98f88409e6b
 
+### 이벤트 도출
+![image](https://user-images.githubusercontent.com/79756040/129881425-3b9d3209-16b3-4d8a-a565-c82a85056980.png)
+
+### 부적격 이벤트 탈락
+
+
+### 완성된 1차 모형
+![image](https://user-images.githubusercontent.com/89397401/132272997-acadd044-2756-4557-9b86-239f1d2e66fe.png)
+
+### 완성된 최종 모형
+![image](https://user-images.githubusercontent.com/89397401/132273023-8e4c11ba-5c0f-41f6-8fcf-76d6eda6a5d0.png)
+
+## Hexagonal Architecture Diagram 도출 
+![image](https://user-images.githubusercontent.com/89397401/132273039-c813fad6-51a7-484d-8d7c-2c64fb491346.png)
 
 # 구현
 
