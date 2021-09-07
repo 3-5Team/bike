@@ -699,10 +699,6 @@ ConfigMap 적용 전
 
 ![image](https://user-images.githubusercontent.com/89397401/132285348-9e0f9b4e-fb24-4429-8972-8542902d2be5.png)
 
-ConfigMap을 적용하기 위한 수정사항
-
-![image](https://user-images.githubusercontent.com/89397401/132284813-5bec0655-9a96-4d38-8a5e-fd518cbe0925.png)
-
 Reservation 서비스의 deployment.yml 추가
 
 ![image](https://user-images.githubusercontent.com/89397401/132285013-8a0a6536-b0de-4ea9-8493-05803727cc65.png)
@@ -716,6 +712,8 @@ ConfigMap 생성하기
 ```
 kubectl create configmap g-store --from-literal=store=이천하이닉스점
 ```
+
+![image](https://user-images.githubusercontent.com/89397401/132284813-5bec0655-9a96-4d38-8a5e-fd518cbe0925.png)
 
 ConfigMap 적용 후
 
