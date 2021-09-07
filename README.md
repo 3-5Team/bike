@@ -342,7 +342,7 @@ server:
 
 ## Polyglot Persistence
 
-- delivery 서비스의 경우, 다른 마이크로 서비스와 달리 HSQL로 구현하였다.
+- Delivery 서비스의 경우, 다른 마이크로 서비스와 달리 HSQL로 구현하였다.
 - 이를 통해 서비스 간 다른 종류의 데이터베이스를 사용하여도 문제 없이 동작하여 Polyglot Persistence를 충족하였다.
 
 |서비스|DB|pom.xml|
@@ -353,5 +353,130 @@ server:
 |Delivery| HSQL |![image](https://user-images.githubusercontent.com/89397401/132274708-d02a9907-b1a1-42e2-bca1-e9e7e1c917b1.png)|
 |MyPage| H2 |![image](https://user-images.githubusercontent.com/89397401/132274646-2acc0dd4-e358-4008-a169-ec9b2a9c7112.png)|
 
- 
- 
+## 동기식 호출(Req/Res 방식)과 Fallback 처리
+
+- Reservation 서비스의 external/PaymentService.java 내에 결제 서비스를 호출하기 위하여 FeignClient를 이용하여 Service 대행 인터페이스(Proxy)를 구현하였다.
+
+### Reservation 서비스의 reservation/external/PaymentService.java
+
+```java
+package bike.external;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.Date;
+
+//@FeignClient(name="payment", url="http://payment:8080")
+@FeignClient(name="payment", url="${api.url.payment}")
+public interface PaymentService {
+    @RequestMapping(method= RequestMethod.GET, path="/payments")
+    public void payment(@RequestBody Payment payment);
+
+}
+```
+
+
+### Reservation 서비스의 Reservation.java
+```java
+package bike;
+
+import javax.persistence.*;
+import org.springframework.beans.BeanUtils;
+import java.util.List;
+import java.util.Date;
+
+@Entity
+@Table(name="Reservation_table")
+public class Reservation {
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Long id;
+    private Long reserveId;
+    private Long bikeId;
+    private String bikeNm;
+    private String userId;
+    private String userNm;
+    private String reserveStore;
+    private String reserveDt;
+    private String reserveStatus;
+    private int price; 
+
+    @PrePersist
+    public void onPrePersist()
+    {
+        if(System.getenv("G_STORE") != null)
+        {
+            this.setReserveStore(System.getenv("G_STORE"));
+        }
+        else
+        {
+            this.setReserveStore("분당야탑점");
+        }
+    }
+
+    @PostPersist
+    public void onPostPersist(){
+        ReservationResistered reservationResistered = new ReservationResistered();        
+        BeanUtils.copyProperties(this, reservationResistered);   
+        reservationResistered.publishAfterCommit();
+
+        //Following code causes dependency to external APIs
+        // it is NOT A GOOD PRACTICE. instead, Event-Policy mapping is recommended.
+
+        bike.external.Payment payment = new bike.external.Payment();
+        
+        // mappings goes here
+        payment.setPayId(this.getId());
+        payment.setReserveId(this.getReserveId());
+        payment.setBikeId(this.getBikeId());
+        payment.setPrice(this.getPrice());
+        payment.setPayStatus("결제예정");
+
+        ReservationApplication.applicationContext.getBean(bike.external.PaymentService.class).payment(payment);
+
+    }
+    @PostRemove
+    public void onPostRemove()
+    {
+        ReservationCancelled reservationCancelled = new ReservationCancelled();
+        BeanUtils.copyProperties(this, reservationCancelled);
+        reservationCancelled.publishAfterCommit();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    /** 이하 생략 **/
+```
+
+동작 확인
+
+- Payment서비스를 내림
+
+![image](https://user-images.githubusercontent.com/89397401/132276716-a1485e02-cf44-4b21-8a02-e0e36493cbfa.png)
+
+- 예약(Reservation) 요청 및 에러 난 화면 표시
+
+![image](https://user-images.githubusercontent.com/89397401/132276856-6151b908-2b49-484c-ab46-0b106055c0fd.png)
+
+- Payment 서비스 재기동 후 다시 예약 요청
+
+![image](https://user-images.githubusercontent.com/89397401/132277241-78cf0bb3-6d62-4740-964a-889503a8b09f.png)
+
+- Payment 서비스에 저장 확인
+
+![image](https://user-images.githubusercontent.com/89397401/132277350-7a529258-bfed-4ba9-8921-78e63cd0b7e1.png)
+
+
+
+
+
