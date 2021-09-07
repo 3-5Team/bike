@@ -353,6 +353,10 @@ server:
 |Delivery| HSQL |![image](https://user-images.githubusercontent.com/89397401/132274708-d02a9907-b1a1-42e2-bca1-e9e7e1c917b1.png)|
 |MyPage| H2 |![image](https://user-images.githubusercontent.com/89397401/132274646-2acc0dd4-e358-4008-a169-ec9b2a9c7112.png)|
 
+Delivery 서비스에 대한 Polyglot Persistence 정상 적용 확인
+
+![image](https://user-images.githubusercontent.com/89397401/132297056-d13bf6e7-5e2a-41d8-9739-4fb07da928ee.png)
+
 ## 동기식 호출(Req/Res 방식)과 Fallback 처리
 
 - Reservation 서비스의 external/PaymentService.java 내에 결제 서비스를 호출하기 위하여 FeignClient를 이용하여 Service 대행 인터페이스(Proxy)를 구현하였다.
