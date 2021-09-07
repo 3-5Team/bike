@@ -767,7 +767,7 @@ $ watch kubectl get all
 kubectl exec -it siege -- /bin/bash
 ```
 
-- siege 로 배포작업 직전에 워크로드를 모니터링 함
+- siege 로 부하 발생 이후 각각 Readiness가 설정을 변경해가면서 적용처리
 
 ```
 siege -c1 -t30S -v http://reservation:8080/reservations
@@ -777,7 +777,7 @@ siege -c1 -t30S -v http://reservation:8080/reservations
  
 ![image](https://user-images.githubusercontent.com/89397401/132290266-e55265e3-a816-4980-bc6b-82465c589f31.png)
 
-- 아래 그림과 같이, Kubernetes가 준비가 되지 않은 delivery pod에 요청을 보내서 siege의 Availability 가 대략 43%으로 떨어짐 
+- 아래 그림과 같이, Kubernetes가 준비가 되지 않은 Reservation Pod에 요청을 보내서 siege의 Availability 가 대략 43%으로 떨어짐 
 
 ![image](https://user-images.githubusercontent.com/89397401/132290564-0d08176f-c7f5-452b-bbba-e9afc579949a.png)
 
@@ -785,10 +785,33 @@ siege -c1 -t30S -v http://reservation:8080/reservations
 
 ![image](https://user-images.githubusercontent.com/89397401/132290755-2273f896-8d43-4333-b2c4-3a3d665b647f.png)
 
-- 배포 중 pod가 2개가 뜨고, 새롭게 띄운 pod가 준비될 때까지, 기존 pod가 유지됨을 확인
+- 배포 중 pod가 2개가 뜨고, 새롭게 띄운 pod가 준비될 때까지, 기존 pod가 유지됨을 확인.
+- 배포 간의 Zero DownTime(Availability 100%)을 유지 하면서 시스템 배포를 안전하게 진행함.
 
 ![image](https://user-images.githubusercontent.com/89397401/132291167-c1ff596f-f666-4cca-9d79-de2cc6ffd442.png)
 ![image](https://user-images.githubusercontent.com/89397401/132290944-f384066b-8f5d-4d02-928f-65747951dbaa.png)
+
+## Self-healing (Liveness Probe)
+
+- Reservation 서비스의 yml 파일에 liveness probe 설정을 바꾸어서, liveness probe 가 동작함을 확인
+- Liveness Probe 옵션을 추가하되, 서비스 포트가 아닌 8090으로 설정 및 존재하지 않은 경로 /actuator/health_test 로 설정, Readiness Probe 미적용
+
+![image](https://user-images.githubusercontent.com/89397401/132292345-30a09d46-3db6-4258-a328-c1322f931a58.png)
+
+- Reservation 서비스에 liveness가 적용된 것을 확인
+
+```
+kubectl describe po reservation
+```
+
+![image](https://user-images.githubusercontent.com/89397401/132292387-6c7de57d-7502-4294-8c0e-ec032f08ad97.png)
+
+- Reservation 에 Liveness가 발동되었고, 8090 포트 및 경로가 응답이 없기에 Restart가 발생함.
+
+
+
+![image](https://user-images.githubusercontent.com/44763296/130482675-ec20503f-a5d1-4c3d-9261-a89ae7ee17f1.png)
+![image](https://user-images.githubusercontent.com/44763296/130482712-e18cda81-f3c8-47f7-abfc-47188cc423ad.png)
 
 ## Circuit Breaker
 
