@@ -756,4 +756,5 @@ $ watch kubectl get all
 
 - 결과 확인 : 부하 생성 이후 CPU 15% 이상 사용 시 자동으로 POD가 증가하면서 Autoscale 됨을 확인 할 수 있다.
 
-![image](https://user-images.githubusercontent.com/89397401/130736630-9a4de0c5-82d6-416c-a24a-11253d8412f0.png)
+![image](https://user-images.githubusercontent.com/89397401/132286354-14e29a91-55b6-49d4-a830-9524af14835b.png)
+
