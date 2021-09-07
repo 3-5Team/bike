@@ -476,7 +476,62 @@ public class Reservation {
 
 ![image](https://user-images.githubusercontent.com/89397401/132277350-7a529258-bfed-4ba9-8921-78e63cd0b7e1.png)
 
+## 비동기식 호출(Pub/Sub 방식)
 
+- Reservation 서비스 내 Reservation.java에서 아래와 같이 서비스 Pub를 구현
 
+```java
+///
 
+@Entity
+@Table(name="Reservation_table")
+public class Reservation {
 
+///
+    @PostRemove
+    public void onPostRemove()
+    {
+        ReservationCancelled reservationCancelled = new ReservationCancelled();
+        BeanUtils.copyProperties(this, reservationCancelled);
+        reservationCancelled.publishAfterCommit();
+    }
+///
+```
+
+- Payment 서비스 내 PolicyHandler.java에서 아래와 같이 Sub을 구현
+
+```java
+@Service
+public class PolicyHandler{
+    @Autowired PaymentRepository paymentRepository;
+
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverReservationCancelled_PaymentCancellation(@Payload ReservationCancelled reservationCancelled){
+
+        if(!reservationCancelled.validate()) return;
+
+        System.out.println("\n\n##### listener PaymentCancellation : " + reservationCancelled.toJson() + "\n\n");
+
+        List<Payment> payments = paymentRepository.findByReserveId(reservationCancelled.getReserveId());
+        payments.forEach(payment -> {
+            paymentRepository.delete(payment);
+        });
+    }
+
+    @StreamListener(KafkaProcessor.INPUT)
+    public void whatever(@Payload String eventString){}
+}
+```
+
+- 비동기식 호출은 다른 서비스가 비정상이여도 이상없이 동작 가능하여, Payment 서비스에 장애가 나도 Reservation 서비스는 정상 동작을 확인한다.
+
+동작 확인
+
+- Payment서비스를 내림
+
+![image](https://user-images.githubusercontent.com/89397401/132277999-83673278-d674-4297-98ae-3568e1afc7f9.png)
+
+- 예약 취소
+
+![image](https://user-images.githubusercontent.com/89397401/132278302-7767d4b5-c8e5-494b-9eee-8cff876cfffe.png)
+![image](https://user-images.githubusercontent.com/89397401/132278353-ad9a6dd6-8c48-4d7b-a647-6f4da5a74dc2.png)
