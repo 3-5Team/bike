@@ -809,8 +809,7 @@ kubectl describe po reservation
 - Reservation 에 Liveness가 발동되었고, 8090 포트 및 경로가 응답이 없기에 지속적으로 Restart가 발생함.
 
 ![image](https://user-images.githubusercontent.com/89397401/132292618-72b2330b-194e-425b-afe7-c6f03bcf6d8b.png)
-
-
+![image](https://user-images.githubusercontent.com/89397401/132294794-be143a71-1d81-4604-9aa4-ad2deecfb779.png)
 
 ## Circuit Breaker
 
