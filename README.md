@@ -696,18 +696,20 @@ ConfigMap 적용 전
 ![image](https://user-images.githubusercontent.com/89397401/132285348-9e0f9b4e-fb24-4429-8972-8542902d2be5.png)
 
 ConfigMap 생성하기
+
 ```
 kubectl create configmap g-store --from-literal=store=이천하이닉스점
 ```
 
 ConfigMap 생성확인
+
 ![image](https://user-images.githubusercontent.com/89397401/132284813-5bec0655-9a96-4d38-8a5e-fd518cbe0925.png)
 
 Reservation 서비스의 Reservation.java 수정
 
 ![image](https://user-images.githubusercontent.com/89397401/132284940-828c4770-4a04-40e9-84bc-8880f3c4e338.png)
 
-Reservation 서비스의 Deployment.yaml 추가
+Reservation 서비스의 deployment.yml 추가
 
 ![image](https://user-images.githubusercontent.com/89397401/132285013-8a0a6536-b0de-4ea9-8493-05803727cc65.png)
 
@@ -715,3 +717,43 @@ ConfigMap 적용 후
 
 ![image](https://user-images.githubusercontent.com/89397401/132285570-fff62f8e-5dc9-45fc-8d24-1156ea811a4d.png)
 
+## Autoscale (HPA:HorizontalPodAutoscaler)
+
+- 특정 수치 이상으로 사용자 요청이 증가할 경우 안정적으로 운영 할 수 있도록 HPA를 설치한다.
+
+Reservation 서비스에 resource 사용량을 정의한다.
+
+Reservation/kubernetes/deployment.yml
+```yml
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "250m"
+    limits:
+      memory: "500Mi"
+      cpu: "500m"
+```
+
+Reservation 서비스에 대한 replica 를 동적으로 늘려주도록 HPA 를 설정한다. 설정은 CPU 사용량이 15%를 넘어서면 replica를 10개까지 늘려준다.
+
+```sh
+kubectl autoscale deploy reservation --min=1 --max=10 --cpu-percent=15
+```
+
+![image](https://user-images.githubusercontent.com/89397401/132285827-3de32a79-68be-4f83-a54f-7a93c4fa0bc8.png)
+
+siege를 활용하여, 부하 생성한다. (30명의 동시사용자가 30초간 부하 발생)
+
+```sh
+siege -c30 -t30S -v --content-type "application/json" 'http://reservation:8080/reservations POST { "reserveId": 1, "bikeId": 1, "bikeNm": "TREK Emonda", "reserveStatus": "예약완료", "price": 5100000}'
+```
+
+- Autoscale을 확인하기 위해 모니터링한다.
+
+```sh
+$ watch kubectl get all
+```
+
+- 결과 확인 : 부하 생성 이후 CPU 15% 이상 사용 시 자동으로 POD가 증가하면서 Autoscale 됨을 확인 할 수 있다.
+
+![image](https://user-images.githubusercontent.com/89397401/130736630-9a4de0c5-82d6-416c-a24a-11253d8412f0.png)
