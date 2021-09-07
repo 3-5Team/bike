@@ -768,13 +768,15 @@ Reservation 서비스의 application.yml 설정
 
 ![image](https://user-images.githubusercontent.com/89397401/132287125-073a987f-073e-429b-9305-dd6b1a15ba83.png)
 
-siege을 통한 동시사용자 100명이 60초 동안 부하 발생
+siege을 통한 동시사용자 100명이 30초 동안 부하 발생
 
 ```
-siege -c100 -t60S -r10 -v --content-type "application/json" 'http://reservation:8080/reservations POST { "reserveId": 1, "bikeId": 1, "bikeNm": "TREK Emonda", "reserveStatus": "예약완료", "price": 5100000}'
+siege -c100 -t30S -r10 -v --content-type "application/json" 'http://reservation:8080/reservations POST { "reserveId": 1, "bikeId": 1, "bikeNm": "TREK Emonda", "reserveStatus": "예약완료", "price": 5100000}'
 ```
 
 결과 확인
 
+![image](https://user-images.githubusercontent.com/89397401/132289193-f6ae16c9-94d2-41b5-8ffd-77b31b6e9c0c.png)
 
-
+- Reservation 시스템은 Down 되지 않고, 지속적으로 Circuit Breaker에 의하여 적절히 회로가 열림과 닫힘이 벌어지면서 자원을 보호하고 있음을 보여줌. 
+- 약 89%정도 정상적으로 서비스 처리를 수행함.
