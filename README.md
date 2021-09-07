@@ -719,7 +719,7 @@ ConfigMap 적용 후
 
 ![image](https://user-images.githubusercontent.com/89397401/132285570-fff62f8e-5dc9-45fc-8d24-1156ea811a4d.png)
 
-## Autoscale (HPA:HorizontalPodAutoscaler)
+## Autoscale (HPA : HorizontalPodAutoscaler)
 
 - 특정 수치 이상으로 사용자 요청이 증가할 경우 안정적으로 운영 할 수 있도록 HPA를 설치한다.
 
