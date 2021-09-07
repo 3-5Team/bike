@@ -607,3 +607,88 @@ docker push skccacr.azurecr.io/gateway:latest
 
 ![image](https://user-images.githubusercontent.com/89397401/132283932-e95d20f2-972d-4c9d-8b4a-d67d05752b9f.png)
 
+- Kubernetes Deployment, Service 생성
+
+```sh
+cd ..
+cd stock/kubernetes
+kubectl apply -f deployment.yml
+kubectl apply -f service.yaml
+
+cd ..
+cd reservation/kubernetes
+kubectl apply -f deployment.yml
+kubectl apply -f service.yaml
+
+cd ..
+cd payment/kubernetes
+kubectl apply -f deployment.yml
+kubectl apply -f service.yaml
+
+cd ..
+cd delivery/kubernetes
+kubectl apply -f deployment.yml
+kubectl apply -f service.yaml
+
+cd ..
+cd mypage/kubernetes
+kubectl apply -f deployment.yml
+kubectl apply -f service.yaml
+
+cd ..
+cd gateway/kubernetes
+kubectl apply -f deployment.yml
+kubectl apply -f service.yaml
+```
+
+/reservation/kubernetes/deployment.yml 파일 
+```yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reservation
+  labels:
+    app: reservation
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reservation
+  template:
+    metadata:
+      labels:
+        app: reservation
+    spec:
+      containers:
+        - name: reservation
+          image: skccacr.azurecr.io/reservation:latest
+          ports:
+            - containerPort: 8080
+```
+
+/reservation/kubernetes/service.yaml 파일 
+```yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: reservation
+  labels:
+    app: reservation
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: reservation
+```
+
+전체 deploy 완료 현황
+
+![image](https://user-images.githubusercontent.com/89397401/132284271-bce402de-9101-43e9-bd65-8e548ab699da.png)
+
+## ConfigMaps
+
+- ConfigMaps는 컨테이너 이미지로부터 설정 정보를 분리할 수 있게 해준다.
+- 환경변수나 설정값 들을 환경변수로 관리해 Pod가 생성될 때 이 값을 주입한다.
+
+
