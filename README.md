@@ -758,3 +758,23 @@ $ watch kubectl get all
 
 ![image](https://user-images.githubusercontent.com/89397401/132286354-14e29a91-55b6-49d4-a830-9524af14835b.png)
 
+## Circuit Breaker
+
+- FeignClient + Hystrix 옵션을 사용하여 구현함.
+- 예약 이후 결제 진행 시 연결을 RESTful Request/Response 로 연동하여 구현이 되어있고, 결제 요청이 과도할 경우 Circuit Breaker 를 통하여 장애격리 처리
+- Hystrix 설정 : 요청처리 쓰레드에서 처리시간이 610 밀리가 넘어서기 시작하여 어느정도 유지되면 Circuit Breaker 회로가 닫히도록 (Fast Fail처리, 차단) 설정
+
+Reservation 서비스의 application.yml 설정
+
+![image](https://user-images.githubusercontent.com/89397401/132287125-073a987f-073e-429b-9305-dd6b1a15ba83.png)
+
+siege을 통한 동시사용자 100명이 60초 동안 부하 발생
+
+```
+siege -c100 -t60S -r10 -v --content-type "application/json" 'http://reservation:8080/reservations POST { "reserveId": 1, "bikeId": 1, "bikeNm": "TREK Emonda", "reserveStatus": "예약완료", "price": 5100000}'
+```
+
+결과 확인
+
+
+
