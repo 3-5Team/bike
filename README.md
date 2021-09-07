@@ -709,13 +709,13 @@ ConfigMap 생성확인
 
 ![image](https://user-images.githubusercontent.com/89397401/132284813-5bec0655-9a96-4d38-8a5e-fd518cbe0925.png)
 
-Reservation 서비스의 Reservation.java 수정
-
-![image](https://user-images.githubusercontent.com/89397401/132284940-828c4770-4a04-40e9-84bc-8880f3c4e338.png)
-
 Reservation 서비스의 deployment.yml 추가
 
 ![image](https://user-images.githubusercontent.com/89397401/132285013-8a0a6536-b0de-4ea9-8493-05803727cc65.png)
+
+Reservation 서비스의 Reservation.java 수정
+
+![image](https://user-images.githubusercontent.com/89397401/132284940-828c4770-4a04-40e9-84bc-8880f3c4e338.png)
 
 ConfigMap 적용 후
 
