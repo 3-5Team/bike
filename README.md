@@ -534,7 +534,6 @@ public class PolicyHandler{
 - 예약 취소
 
 ![image](https://user-images.githubusercontent.com/89397401/132278302-7767d4b5-c8e5-494b-9eee-8cff876cfffe.png)
-![image](https://user-images.githubusercontent.com/89397401/132278427-4d894ebe-6bbc-452f-ae05-9e09c8df716f.png)
 
 ## CQRS
 
