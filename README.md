@@ -383,7 +383,6 @@ public interface PaymentService {
 }
 ```
 
-
 ### Reservation 서비스의 Reservation.java
 ```java
 package bike;
@@ -819,9 +818,12 @@ kubectl describe po reservation
 - 예약 이후 결제 진행 시 연결을 RESTful Request/Response 로 연동하여 구현이 되어있고, 예약 요청이 과도할 경우 Circuit Breaker 를 통하여 장애격리 처리
 - Hystrix 설정 : 요청처리 쓰레드에서 처리시간이 610 밀리가 넘어서기 시작하여 어느정도 유지되면 Circuit Breaker 회로가 닫히도록 (Fast Fail처리, 차단) 설정
 
-Reservation 서비스의 application.yml 설정
-
+Reservation 서비스의 application.yml 설정 : 임의로 Random Delay 발생 시킴
 ![image](https://user-images.githubusercontent.com/89397401/132287125-073a987f-073e-429b-9305-dd6b1a15ba83.png)
+
+Payment 서비스의 Payment.java설정
+
+![image](https://user-images.githubusercontent.com/89397401/132302402-4356959c-3f9d-4fd2-8f28-551686ecac9e.png)
 
 siege을 통한 동시사용자 100명이 30초 동안 부하 발생
 
