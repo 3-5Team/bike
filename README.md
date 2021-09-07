@@ -547,7 +547,8 @@ Viewer 인 MyPage 서비스를 별도로 구현하여 아래와 같이 View가 �
 
 ### 예약 취소 수행 후, MyPages
 
-
+![image](https://user-images.githubusercontent.com/89397401/132279907-606aa6f4-9ef5-4367-88e3-907e3578e24c.png)
+![image](https://user-images.githubusercontent.com/89397401/132280040-69d89962-fb2f-49ab-9c39-2587b046968e.png)
 
 # 운영
   
