@@ -796,7 +796,7 @@ siege -c1 -t30S -v http://reservation:8080/reservations
 - Reservation 서비스의 yml 파일에 liveness probe 설정을 바꾸어서, liveness probe 가 동작함을 확인
 - Liveness Probe 옵션을 추가하되, 서비스 포트가 아닌 8090으로 설정 및 존재하지 않은 경로 /actuator/health_test 로 설정, Readiness Probe 미적용
 
-![image](https://user-images.githubusercontent.com/89397401/132292345-30a09d46-3db6-4258-a328-c1322f931a58.png)
+![image](https://user-images.githubusercontent.com/89397401/132292530-73284514-e40d-45ba-89a3-4c90f579ad87.png)
 
 - Reservation 서비스에 liveness가 적용된 것을 확인
 
@@ -806,12 +806,11 @@ kubectl describe po reservation
 
 ![image](https://user-images.githubusercontent.com/89397401/132292387-6c7de57d-7502-4294-8c0e-ec032f08ad97.png)
 
-- Reservation 에 Liveness가 발동되었고, 8090 포트 및 경로가 응답이 없기에 Restart가 발생함.
+- Reservation 에 Liveness가 발동되었고, 8090 포트 및 경로가 응답이 없기에 지속적으로 Restart가 발생함.
+
+![image](https://user-images.githubusercontent.com/89397401/132292618-72b2330b-194e-425b-afe7-c6f03bcf6d8b.png)
 
 
-
-![image](https://user-images.githubusercontent.com/44763296/130482675-ec20503f-a5d1-4c3d-9261-a89ae7ee17f1.png)
-![image](https://user-images.githubusercontent.com/44763296/130482712-e18cda81-f3c8-47f7-abfc-47188cc423ad.png)
 
 ## Circuit Breaker
 
