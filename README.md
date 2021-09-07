@@ -691,4 +691,27 @@ spec:
 - ConfigMaps는 컨테이너 이미지로부터 설정 정보를 분리할 수 있게 해준다.
 - 환경변수나 설정값 들을 환경변수로 관리해 Pod가 생성될 때 이 값을 주입한다.
 
+ConfigMap 적용 전
+
+![image](https://user-images.githubusercontent.com/89397401/132285348-9e0f9b4e-fb24-4429-8972-8542902d2be5.png)
+
+ConfigMap 생성하기
+```
+kubectl create configmap g-store --from-literal=store=이천하이닉스점
+```
+
+ConfigMap 생성확인
+![image](https://user-images.githubusercontent.com/89397401/132284813-5bec0655-9a96-4d38-8a5e-fd518cbe0925.png)
+
+Reservation 서비스의 Reservation.java 수정
+
+![image](https://user-images.githubusercontent.com/89397401/132284940-828c4770-4a04-40e9-84bc-8880f3c4e338.png)
+
+Reservation 서비스의 Deployment.yaml 추가
+
+![image](https://user-images.githubusercontent.com/89397401/132285013-8a0a6536-b0de-4ea9-8493-05803727cc65.png)
+
+ConfigMap 적용 후
+
+![image](https://user-images.githubusercontent.com/89397401/132285570-fff62f8e-5dc9-45fc-8d24-1156ea811a4d.png)
 
