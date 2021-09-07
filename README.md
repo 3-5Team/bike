@@ -836,4 +836,6 @@ siege -c100 -t30S -r10 -v --content-type "application/json" 'http://reservation:
 - Reservation 시스템은 Down 되지 않고, 지속적으로 Circuit Breaker에 의하여 적절히 회로가 열림과 닫힘이 벌어지면서 자원을 보호하고 있음을 보여줌. 
 - 약 89%정도 정상적으로 서비스 처리를 수행함.
 
+
+
 End of READ ME
