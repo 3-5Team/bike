@@ -542,14 +542,12 @@ Viewer 인 MyPage 서비스를 별도로 구현하여 아래와 같이 View가 �
 
 ### 예약 수행 후, MyPages
 
-![image](https://user-images.githubusercontent.com/89397401/132279067-6b95b682-0c1e-4484-85de-9e2de88b8e2d.png)
-
-![image](https://user-images.githubusercontent.com/86760678/130352435-18c4912e-11d7-4368-b0b5-0a8568bc740d.png)
+![image](https://user-images.githubusercontent.com/89397401/132279540-793be9c7-42c3-4d0b-844c-acead8f0e3ed.png)
+![image](https://user-images.githubusercontent.com/89397401/132279605-4bfd46bc-a1fc-4994-b943-587a45bf3f67.png)
 
 ### 예약 취소 수행 후, MyPages
 
-![image](https://user-images.githubusercontent.com/89397401/132279540-793be9c7-42c3-4d0b-844c-acead8f0e3ed.png)
-![image](https://user-images.githubusercontent.com/89397401/132279605-4bfd46bc-a1fc-4994-b943-587a45bf3f67.png)
+
 
 # 운영
   
