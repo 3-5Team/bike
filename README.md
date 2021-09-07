@@ -758,6 +758,38 @@ $ watch kubectl get all
 
 ![image](https://user-images.githubusercontent.com/89397401/132286354-14e29a91-55b6-49d4-a830-9524af14835b.png)
 
+## Zero-Downtime deploy (Readiness Probe)
+
+- 먼저 무정지 재배포가 100% 되는 것인지 확인하기 위해서 Autoscaler 이나 CB 설정을 제거함
+- 생성된 siege Pod 안쪽에서 정상작동 확인
+
+```
+kubectl exec -it siege -- /bin/bash
+```
+
+- siege 로 배포작업 직전에 워크로드를 모니터링 함
+
+```
+siege -c1 -t30S -v http://reservation:8080/reservations
+```
+
+- Readiness가 설정되지 않은 yml 파일로 배포 진행
+ 
+![image](https://user-images.githubusercontent.com/89397401/132290266-e55265e3-a816-4980-bc6b-82465c589f31.png)
+
+- 아래 그림과 같이, Kubernetes가 준비가 되지 않은 delivery pod에 요청을 보내서 siege의 Availability 가 대략 43%으로 떨어짐 
+
+![image](https://user-images.githubusercontent.com/89397401/132290564-0d08176f-c7f5-452b-bbba-e9afc579949a.png)
+
+- Readiness가 설정된 yml 파일로 배포 진행
+
+![image](https://user-images.githubusercontent.com/89397401/132290755-2273f896-8d43-4333-b2c4-3a3d665b647f.png)
+
+- 배포 중 pod가 2개가 뜨고, 새롭게 띄운 pod가 준비될 때까지, 기존 pod가 유지됨을 확인
+
+![image](https://user-images.githubusercontent.com/89397401/132291167-c1ff596f-f666-4cca-9d79-de2cc6ffd442.png)
+![image](https://user-images.githubusercontent.com/89397401/132290944-f384066b-8f5d-4d02-928f-65747951dbaa.png)
+
 ## Circuit Breaker
 
 - FeignClient + Hystrix 옵션을 사용하여 구현함.
@@ -780,3 +812,5 @@ siege -c100 -t30S -r10 -v --content-type "application/json" 'http://reservation:
 
 - Reservation 시스템은 Down 되지 않고, 지속적으로 Circuit Breaker에 의하여 적절히 회로가 열림과 닫힘이 벌어지면서 자원을 보호하고 있음을 보여줌. 
 - 약 89%정도 정상적으로 서비스 처리를 수행함.
+
+
