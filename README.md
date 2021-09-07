@@ -819,6 +819,7 @@ kubectl describe po reservation
 - Hystrix 설정 : 요청처리 쓰레드에서 처리시간이 610 밀리가 넘어서기 시작하여 어느정도 유지되면 Circuit Breaker 회로가 닫히도록 (Fast Fail처리, 차단) 설정
 
 Reservation 서비스의 application.yml 설정 : 임의로 Random Delay 발생 시킴
+
 ![image](https://user-images.githubusercontent.com/89397401/132287125-073a987f-073e-429b-9305-dd6b1a15ba83.png)
 
 Payment 서비스의 Payment.java설정
